@@ -19,14 +19,14 @@ class Paciente //implements PacienteInterface
     *@ORM\ManyToMany(targetEntity="Analisis", inversedBy="Paciente")
     *@ORM\JoinTable(name="Paciente_analisis")
     */
-    private $categories=null;
+    private $analises=null;
     public function __construct()
     {
-        $this->categories=new ArrayCollection();
+        $this->analises=new ArrayCollection();
     }
-    public function getCategories()
+    public function getAnalises()
     {
-        return $this->categories;
+        return $this->analises;
     }
     /**
      * @var int

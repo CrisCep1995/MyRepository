@@ -2,20 +2,21 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection ;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints  as  Assert ;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Analisis
  *
  * @ORM\Table(name="analisis")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AnalisisRepository")
  */
-class Analisis implements \JsonSerializable
+class Analisis //implements \JsonSerializable
 {
 
     /**
-    *@ORM\ManyToMany(targetEntity="Paciente", mappedBy="analisis")
+    *@ORM\ManyToMany(targetEntity="Paciente", mappedBy="analises")
     *@ORM\JoinTable(name="Paciente_analisis")
     */
     private $paciente=null;
@@ -82,7 +83,7 @@ class Analisis implements \JsonSerializable
     {
         return $this->name;
     }
-    
+
     public function jsonSerialize ()
     {
         return [
