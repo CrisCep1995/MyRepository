@@ -96,6 +96,10 @@ class Paciente //implements PacienteInterface
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * Get name
@@ -201,6 +205,17 @@ class Paciente //implements PacienteInterface
     public function getIdType()
     {
         return $this->idType;
+    }
+    public function jsonSerialize()
+    {
+        return [
+                    'id'=>$this->getId(),
+                    'name'=>$this->getName(),
+                    'lastName'=>$this->getlastName(),
+                    'age'=>$this->getAge(),
+                    'idNumber'=>$this->getIdNumber(),
+                    'idType'=>$this->getIdType()
+        ];
     }
 }
 

@@ -78,6 +78,11 @@ class Analisis implements \JsonSerializable
     {
         return $this->name;
     }
+    public function __ToString()
+    {
+        return $this->name;
+    }
+    
     public function jsonSerialize ()
     {
         return [
