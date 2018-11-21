@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-//use ecommarg\cart\ProductInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
@@ -13,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="paciente")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PacienteRepository")
  */
-class Paciente //implements PacienteInterface
+class Paciente implements \JsonSerializable
 {   
     /**
     * @ORM\ManyToMany(targetEntity="Analisis", inversedBy="Paciente")
@@ -41,6 +40,7 @@ class Paciente //implements PacienteInterface
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
@@ -48,6 +48,7 @@ class Paciente //implements PacienteInterface
      * @var string
      *
      * @ORM\Column(name="lastName", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $lastName;
 
@@ -55,6 +56,7 @@ class Paciente //implements PacienteInterface
      * @var int
      *
      * @ORM\Column(name="Age", type="integer")
+     * @Assert\NotBlank
      */
     private $age;
 
@@ -62,6 +64,7 @@ class Paciente //implements PacienteInterface
      * @var string
      *
      * @ORM\Column(name="idNumber", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $idNumber;
 
@@ -69,6 +72,7 @@ class Paciente //implements PacienteInterface
      * @var string
      *
      * @ORM\Column(name="idType", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $idType;
 
@@ -206,6 +210,12 @@ class Paciente //implements PacienteInterface
     {
         return $this->idType;
     }
+    
+    /**
+    * Get id
+    *
+    * @return int
+    */
     public function jsonSerialize()
     {
         return [

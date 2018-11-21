@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="analisis")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\AnalisisRepository")
  */
-class Analisis //implements \JsonSerializable
+class Analisis implements \JsonSerializable
 {
 
     /**
@@ -42,6 +42,7 @@ class Analisis //implements \JsonSerializable
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 

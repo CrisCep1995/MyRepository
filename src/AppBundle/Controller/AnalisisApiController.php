@@ -25,9 +25,13 @@ class AnalisisApiController extends Controller
 
         $analises = $em->getRepository('AppBundle:Analisis')->findAll();
 
-        return $this->render('analisis/index.html.twig', array(
-            'analises' => $analises,
-        ));
+        $response=new Response();
+        $response->headers->add([
+            'Content-Type'=>'application/json'
+        ]);
+        $response->setContent(json_encode($analises));
+            
+        return $response;
     }
 
     /**
@@ -39,21 +43,40 @@ class AnalisisApiController extends Controller
     public function newAction(Request $request)
     {
         $analisi = new Analisis();
-        $form = $this->createForm('AppBundle\Form\AnalisisApiType', $analisi);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $form = $this->createForm(
+            'AppBundle\Form\AnalisisApiType',
+            $analisi,
+            [
+                'csrf_protection' => false
+            ]
+        );
+        $form->bind($request);
+        $valid = $form->isValid();
+        $response = new Response();
+        if(false === $valid){
+            $response->setStatusCode(400);
+            $response->setContent(json_encode($this->getFormErrors($form)));
+            return $response;
+        }
+        if (true === $valid) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($analisi);
             $em->flush();
-
-            return $this->redirectToRoute('analisis_show', array('id' => $analisi->getId()));
+            $response->setContent(json_encode($analisi));
         }
-
-        return $this->render('analisis/new.html.twig', array(
-            'analisi' => $analisi,
-            'form' => $form->createView(),
-        ));
+        return $response;
+    }
+    public function getFormErrors($form){
+        $errors = [];
+        if (0 === $form->count()){
+            return $errors;
+        }
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = (string) $form[$child->getName()]->getErrors();
+            }
+        }
+        return $errors;
     }
 
     /**

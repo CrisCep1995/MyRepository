@@ -6,30 +6,22 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AnalisisApiType extends AbstractType
+class AnalisisApiType extends AnalisisType
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('name')->add('paciente');
-    }/**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Analisis'
+            'data_class' => 'AppBundle\Entity\Analisis',
+                'csrf_protection' => 'false'
         ));
     }
-
+    
     /**
      * {@inheritdoc}
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_analisis';
+        return '';
     }
 
 

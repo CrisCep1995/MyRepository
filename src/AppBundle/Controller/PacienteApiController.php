@@ -6,6 +6,7 @@ use AppBundle\Entity\Paciente;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,9 +25,13 @@ class PacienteApiController extends Controller
 
         $pacientes = $em->getRepository('AppBundle:Paciente')->findAll();
 
-        return $this->render('paciente/index.html.twig', array(
-            'pacientes' => $pacientes,
-        ));
+        $response=new Response();
+        $response->headers->add([
+            'Content-Type'=>'application/json'
+        ]);
+        $response->setContent(json_encode($pacientes));
+            
+        return $response;
     }
 
     /**
@@ -38,20 +43,56 @@ class PacienteApiController extends Controller
     public function newAction(Request $request)
     {
         $paciente = new Paciente();
-        $form = $this->createForm('AppBundle\Form\PacienteApiType', $paciente);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
+        $form = $this->createForm(
+            'AppBundle\Form\PacienteApiType',
+            $paciente,
+            [
+                'csrf_protection' => false
+            ]
+        );
+        $form->bind($request);
+        $valid = $form->isValid();
+        $response = new Response();
+        if(false === $valid){
+            $response->setStatusCode(400);
+            $response->setContent(json_encode($this->getFormErrors($form)));
+            return $response;
+        }
+        if (true === $valid) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($paciente);
             $em->flush();
-
-            return $this->redirectToRoute('paciente_show', array('id' => $paciente->getId()));
+            $response->setContent(json_encode($paciente));
         }
+        return $response;
+    }
 
-        return $this->render('paciente/new.html.twig', array(
-            'paciente' => $paciente,
-            'form' => $form->createView(),
-        ));
+    public function getFormErrors($form){
+        $errors = [];
+        if (0 === $form->count()){
+            return $errors;
+        }
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = (string) $form[$child->getName()]->getErrors();
+            }
+        }
+        return $errors;
+    }
+
+    /**
+     * Creates a form to delete a paciente entity.
+     *
+     * @param Paciente $paciente The paciente entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm(Paciente $paciente)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('paciente_delete', array('id' => $paciente->getId())))
+            ->setMethod('DELETE')
+            ->getForm()
+        ;
     }
 }
