@@ -16,8 +16,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Paciente //implements PacienteInterface
 {   
     /**
-    *@ORM\ManyToMany(targetEntity="Analisis", inversedBy="Paciente")
-    *@ORM\JoinTable(name="Paciente_analisis")
+    * @ORM\ManyToMany(targetEntity="Analisis", inversedBy="Paciente")
+    * @ORM\JoinTable(name="Paciente_analisis")
     */
     private $analises=null;
     public function __construct()
