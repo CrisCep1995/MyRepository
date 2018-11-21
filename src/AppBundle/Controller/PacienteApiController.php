@@ -54,7 +54,7 @@ class PacienteApiController extends Controller
         $valid = $form->isValid();
         $response = new Response();
         if(false === $valid){
-            $response->setStatusCode(400);
+            $response->setStatusCode(405);
             $response->setContent(json_encode($this->getFormErrors($form)));
             return $response;
         }
