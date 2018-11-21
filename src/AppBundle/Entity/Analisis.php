@@ -15,8 +15,8 @@ class Analisis implements \JsonSerializable
 {
 
     /**
-    * @ ORM \ ManyToMany (targetEntity = "Paciente", mappedBy = "Analisis")
-    * @ ORM \ JoinTable (name = "Paciente_analisis")
+    *@ORM\ManyToMany(targetEntity="Paciente", mappedBy="analisis")
+    *@ORM\JoinTable(name="Paciente_analisis")
     */
     private $paciente=null;
     public function __construct()
@@ -81,8 +81,8 @@ class Analisis implements \JsonSerializable
     public function jsonSerialize ()
     {
         return [
-                    ' id ' => $ this -> getId (),
-                    ' name ' => $ this -> getName (),
+                    'id'=> $this->getId (),
+                    'name' => $this->getName (),
         ];
     }
 }

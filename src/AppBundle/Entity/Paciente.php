@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 //use ecommarg\cart\ProductInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Paciente
