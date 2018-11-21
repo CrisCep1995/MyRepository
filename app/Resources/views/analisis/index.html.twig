@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Analises list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for analisi in analises %}
+            <tr>
+                <td><a href="{{ path('analisis_show', { 'id': analisi.id }) }}">{{ analisi.id }}</a></td>
+                <td>{{ analisi.name }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('analisis_show', { 'id': analisi.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('analisis_edit', { 'id': analisi.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('analisis_new') }}">Create a new analisi</a>
+        </li>
+    </ul>
+{% endblock %}
